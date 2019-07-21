@@ -18,12 +18,14 @@
       <span  class="div-body-data-table-del" v-if="el.isSelected">{{index+1}}.</span>
       <span v-else>{{index+1}}.</span> 
       <span>
-         <Checkbox class="div-body-data-table-checkbox" @click="completedItem(index)" v-model="el.isSelected">
-           <del v-if="el.isSelected" class="div-body-data-table-del" >{{el.val}}</del>
-      <span v-else>{{el.val}}</span>
-         </Checkbox>
-      
-      </span>
+         <Checkbox class="div-body-data-table-checkbox" @click="completedItem(index)" v-model="el.isSelected">  </Checkbox>
+         <span v-if="!el.isEditing" @dblclick="editItemName(index)">
+          <del v-if="el.isSelected" class="div-body-data-table-del" >{{el.val}}</del>
+        <span v-else>{{el.val}}</span>  
+         </span>
+       <Input v-else v-model="el.val" :autofocus="true" class="div-body-data-table-input" size="small" @on-blur="itemInputOnBlur(index)" @on-enter="itemInputOnBlur(index)"></Input>
+       </span>
+  
      
     </div>
       </div>
@@ -55,7 +57,8 @@ export default {
      if(this.itemName != ""){
        let item = {
        val:this.itemName,
-       isSelected: this.status =='Complete'?true:false
+       isSelected: this.status =='Complete'?true:false,
+       isEditing: false
        }
      this.allItems.push(item)
      this.showItems.push(item)
@@ -83,7 +86,13 @@ export default {
         this.showItems = this.allItems;
      }
    
-   }
+   },
+   editItemName(index) {
+      this.showItems[index].isEditing = true;
+    },
+    itemInputOnBlur(index) {
+      this.showItems[index].isEditing = false;
+    }
 }
 }
 </script>

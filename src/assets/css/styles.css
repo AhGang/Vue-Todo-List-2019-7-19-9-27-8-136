@@ -38,6 +38,10 @@
     width: 550px !important;
     font-size: 20px;
 }
+.div-body-data-table-input{
+    width: auto !important;
+    top: -2px;
+}
 
 .div-body-add-button{
     margin-left: 10px;width: 70px;
