@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  id="app" style="background-color:#eee;position: fixed;width: 100%;height: 100%;">
     <ItemsGroup></ItemsGroup>
 </div>
 </template>
@@ -11,6 +11,7 @@ export default {
 }
 </script>
 <style>
-
+@import "./assets/css/styles.css"
 </style>
+
 
