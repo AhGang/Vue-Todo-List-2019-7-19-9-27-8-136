@@ -15,16 +15,19 @@
     <div class="div-body-data-table">
       <div class="div-body-data-table-outer">
     <div  class="div-body-data-table-single" v-for="(el, index) in showItems" :key="index" >
-      <span  class="div-body-data-table-del" v-if="el.isSelected">{{index+1}}.</span>
-      <span v-else>{{index+1}}.</span> 
+      <div  v-bind:class="{'div-body-data-item':index % 2 == 0}">
+         <span  class="div-body-data-table-del" v-if="el.isSelected">{{index+1}}.</span>
+      <span v-else>{{index+1}}. </span> 
       <span>
-         <Checkbox class="div-body-data-table-checkbox" @click="completedItem(index)" v-model="el.isSelected">  </Checkbox>
+         <Checkbox size="large" class="div-body-data-table-checkbox" @click="completedItem(index)" v-model="el.isSelected">  </Checkbox>
          <span v-if="!el.isEditing" @dblclick="editItemName(index)">
           <del v-if="el.isSelected" class="div-body-data-table-del" >{{el.val}}</del>
         <span v-else>{{el.val}}</span>  
          </span>
        <Input v-else v-model="el.val" :autofocus="true" class="div-body-data-table-input" size="small" @on-blur="itemInputOnBlur(index)" @on-enter="itemInputOnBlur(index)"></Input>
        </span>
+      </div>
+     
   
      
     </div>
@@ -83,16 +86,16 @@ export default {
      }else if(status=='Complete'){
         this.showItems = this.allItems.filter(e=>(e.isSelected == true))
      }else{
-        this.showItems = this.allItems;
+       this.showItems = JSON.parse(JSON.stringify(this.allItems))
      }
    
    },
    editItemName(index) {
       this.showItems[index].isEditing = true;
-    },
-    itemInputOnBlur(index) {
+   },
+   itemInputOnBlur(index) {
       this.showItems[index].isEditing = false;
-    }
+   }
 }
 }
 </script>

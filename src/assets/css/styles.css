@@ -77,5 +77,8 @@
 .div-footer-button{
     width:70px;
     margin-right: 50px;
-    font-size: 18px;
+    font-size: 30px;
+}
+.div-body-data-item{
+    background-color: darkseagreen;
 }
