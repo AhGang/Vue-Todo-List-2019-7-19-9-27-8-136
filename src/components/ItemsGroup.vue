@@ -14,22 +14,8 @@
     <Button type="success" class="div-body-add-button"    @click="addItem" >Add</Button>
     <div class="div-body-data-table">
       <div class="div-body-data-table-outer">
-    <div  class="div-body-data-table-single" v-for="(el, index) in showItems" :key="index" >
-      <div  v-bind:class="{'div-body-data-item':index % 2 == 0}">
-         <span  class="div-body-data-table-del" v-if="el.isSelected">{{index+1}}.</span>
-      <span v-else>{{index+1}}. </span> 
-      <span>
-         <Checkbox size="large" class="div-body-data-table-checkbox" @click="completedItem(index)" v-model="el.isSelected">  </Checkbox>
-         <span v-if="!el.isEditing" @dblclick="editItemName(index)">
-          <del v-if="el.isSelected" class="div-body-data-table-del" >{{el.val}}</del>
-        <span v-else>{{el.val}}</span>  
-         </span>
-       <Input v-else v-model="el.val" :autofocus="true" class="div-body-data-table-input" size="small" @on-blur="itemInputOnBlur(index)" @on-enter="itemInputOnBlur(index)"></Input>
-       </span>
-      </div>
-     
-  
-     
+    <div  class="div-body-data-table-single" v-for="(el, index) in showItems" :key="index" > 
+         <Item :itemData="{el:el,index:index}" @completedItem="completedItem" @editItemName="editItemName" @itemInputOnBlur="itemInputOnBlur"></Item>
     </div>
       </div>
       </div> 
@@ -45,8 +31,10 @@
 </template>
 
 <script>
+import Item from './Item'
 export default {
  name: 'ItemsGroup',
+ components:{Item},
  data(){
     return {
       itemName:"",
@@ -70,15 +58,6 @@ export default {
         this.$Message.error('Can not add a null item')
      }
    },
-   completedItem(index){
-     if(!this.showItems[index].isSelected){
-      this.showItems[index].isSelected = true
-      this.allItems[index].isSelected = true
-     }else{
-      this.showItems[index].isSelected = false
-      this.allItems[index].isSelected = false
-     }
-   },
    showItemsStatus(status){
      this.status = status
      if(status=='Active'){
@@ -88,7 +67,15 @@ export default {
      }else{
        this.showItems = JSON.parse(JSON.stringify(this.allItems))
      }
-   
+   },
+    completedItem(index){
+     if(!this.showItems[index].isSelected){
+      this.showItems[index].isSelected = true
+      this.allItems[index].isSelected = true
+     }else{
+      this.showItems[index].isSelected = false
+      this.allItems[index].isSelected = false
+     }
    },
    editItemName(index) {
       this.showItems[index].isEditing = true;
