@@ -1,14 +1,7 @@
 <template>
 <div>
   <Card class="div-card">
-<div class="div-header">
-  <div class="div-header-title">
-  <h1>Jquery To Do List</h1>
-</div>
-<div class="div-header-comment">
-  <h3>Simple Todo List with adding and filter by diff status.</h3>
-</div>
-</div>    
+  <ListHeader></ListHeader>
 <div class="div-body">
      <Input class="div-body-input" type="text" v-model="itemName"></Input>
     <Button type="success" class="div-body-add-button"    @click="addItem" >Add</Button>
@@ -20,11 +13,7 @@
       </div>
       </div> 
   </div>
-  <div class="div-footer">
-    <Button type="text" class="div-footer-button"  @click="showItemsStatus('All')">All</Button>
-    <Button type="text" class="div-footer-button"  @click="showItemsStatus('Active')">Active</Button>
-    <Button type="text" class="div-footer-button"  @click="showItemsStatus('Complete')">Complete</Button>
-  </div>
+  <ListFooter @showItemsStatus="showItemsStatus"></ListFooter>
   </Card>
 </div>
 
@@ -32,9 +21,11 @@
 
 <script>
 import Item from './Item'
+import ListHeader from './ListHeader'
+import ListFooter from './ListFooter'
 export default {
  name: 'ItemsGroup',
- components:{Item},
+ components:{Item,ListHeader,ListFooter},
  data(){
     return {
       itemName:"",
