@@ -3,11 +3,11 @@
   <Card class="div-card">
   <ListHeader></ListHeader>
 <div class="div-body">
-     <Input class="div-body-input" type="text" v-model="itemName"></Input>
+     <Input class="div-body-input" type="text" v-model="$store.state.itemName"></Input>
     <Button type="success" class="div-body-add-button"    @click="addItem" >Add</Button>
     <div class="div-body-data-table">
       <div class="div-body-data-table-outer">
-    <div  class="div-body-data-table-single" v-for="(el, index) in showItems" :key="index" > 
+    <div  class="div-body-data-table-single" v-for="(el, index) in $store.state.showItems" :key="index" > 
          <Item :itemData="{el:el,index:index}" @completedItem="completedItem" @editItemName="editItemName" @itemInputOnBlur="itemInputOnBlur"></Item>
     </div>
       </div>
@@ -28,23 +28,19 @@ export default {
  components:{Item,ListHeader,ListFooter},
  data(){
     return {
-      itemName:"",
-      allItems: [],
-      showItems: [],
       status: 'All'
     }
   },
   methods:{
    addItem(){
-     if(this.itemName != ""){
+     if(this.$store.state.itemName != ""){
        let item = {
-       val:this.itemName,
+       val:this.$store.state.itemName,
        isSelected: this.status =='Complete'?true:false,
        isEditing: false
        }
-     this.allItems.push(item)
-     this.showItems.push(item)
-     this.itemName = ""
+     this.$store.commit('pushItem',item)
+     this.$store.commit('resetItemName')
      }else{
         this.$Message.error('Can not add a null item')
      }
@@ -52,27 +48,22 @@ export default {
    showItemsStatus(status){
      this.status = status
      if(status=='Active'){
-        this.showItems = this.allItems.filter(e=>(e.isSelected == false))
+        this.$store.commit('filterItems','Active')
      }else if(status=='Complete'){
-        this.showItems = this.allItems.filter(e=>(e.isSelected == true))
+        this.$store.commit('filterItems','Complete')
      }else{
-       this.showItems = JSON.parse(JSON.stringify(this.allItems))
+       this.$store.commit('getAllItems')
      }
    },
     completedItem(index){
-     if(!this.showItems[index].isSelected){
-      this.showItems[index].isSelected = true
-      this.allItems[index].isSelected = true
-     }else{
-      this.showItems[index].isSelected = false
-      this.allItems[index].isSelected = false
-     }
+     let itemStatus = this.showItems[index].isSelected
+     this.$store.commit('setCompletedItem',{itemStatus:itemStatus,index:index})
    },
    editItemName(index) {
-      this.showItems[index].isEditing = true;
+       this.$store.commit('isEditItem',{index:index,status:true})
    },
    itemInputOnBlur(index) {
-      this.showItems[index].isEditing = false;
+     this.$store.commit('isEditItem',{index:index,status:false})
    }
 }
 }

@@ -7,6 +7,6 @@ Vue.config.productionTip = false
 
 Vue.use(iView)
 new Vue({
-  store
+  store,
   render: h => h(App),
 }).$mount('#app')
