@@ -3,12 +3,12 @@
   <Card class="div-card">
   <ListHeader></ListHeader>
 <div class="div-body">
-     <Input class="div-body-input" type="text" v-model="$store.state.itemName"></Input>
-    <Button type="success" class="div-body-add-button"    @click="addItem" >Add</Button>
+   <Input class="div-body-input" type="text" v-model="$store.state.itemName"></Input>
+   <Button type="success" class="div-body-add-button"    @click="addItem" >Add</Button>
     <div class="div-body-data-table">
       <div class="div-body-data-table-outer">
     <div  class="div-body-data-table-single" v-for="(el, index) in $store.state.showItems" :key="index" > 
-         <Item :itemData="{el:el,index:index}" @completedItem="completedItem" @editItemName="editItemName" @itemInputOnBlur="itemInputOnBlur"></Item>
+         <Item  :index="index"></Item>
     </div>
       </div>
       </div> 
@@ -55,16 +55,6 @@ export default {
        this.$store.commit('getAllItems')
      }
    },
-    completedItem(index){
-     let itemStatus = this.showItems[index].isSelected
-     this.$store.commit('setCompletedItem',{itemStatus:itemStatus,index:index})
-   },
-   editItemName(index) {
-       this.$store.commit('isEditItem',{index:index,status:true})
-   },
-   itemInputOnBlur(index) {
-     this.$store.commit('isEditItem',{index:index,status:false})
-   }
 }
 }
 </script>

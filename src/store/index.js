@@ -39,6 +39,13 @@ const store = new Vuex.Store({
         isEditItem(state,data){
             state.showItems[data.index].isEditing = data.status;
         },
+        updateItem(state,data){
+            state.showItems[data.index].val = data.val;
+            state.allItems[data.index].val = data.val;
+        },
+        completedItem(state,index){
+            state.showItems[index].isSelected = !state.showItems[index].isSelected
+        }
     }
 }) 
 
